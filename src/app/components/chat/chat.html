@@ -1,0 +1,17 @@
+<div class="chat-container">
+  <div class="messages">
+    <div *ngFor="let msg of messages" class="message" [class.user]="msg.from === 'user'" [class.bot]="msg.from === 'bot'">
+  <div *ngIf="msg.type === 'text'" [innerHTML]="msg.text"></div>
+  <div *ngIf="msg.type === 'image'">
+    <img [src]="msg.imageSrc" alt="User Image"/>
+  </div>
+</div>
+
+  </div>
+  <form (submit)="sendMessager()" class="input-form">
+    <input type="text" [(ngModel)]="userInput" name="userInput" placeholder="Escribe algo..." autocomplete="off" />
+    <label for="file-upload" class="upload-label">📷</label>
+    <input id="file-upload" type="file" (change)="onFileSelected($event)" />
+    <button type="submit">Enviar</button>
+  </form>
+</div>

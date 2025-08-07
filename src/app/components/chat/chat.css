@@ -1,0 +1,578 @@
+/* 🌿 CHAT BOTÁNICO - ANÁLISIS DE SALUD DE PLANTAS */
+
+/* Fondo de toda la página */
+body {
+  background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 50%, #dcedc8 100%);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.chat-container {
+  height: 90vh;
+  max-width: 1000px;
+  width: 90%;
+  background: linear-gradient(135deg, rgba(139, 195, 74, 0.1) 0%, rgba(165, 214, 167, 0.05) 100%);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  position: relative;
+  overflow: hidden;
+  border-radius: 25px;
+  box-shadow: 
+    0 20px 60px rgba(76, 175, 80, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+  margin: auto;
+}
+
+/* Robot cute flotando de fondo - REMOVIDO */
+
+/* Hojas cayendo - Múltiples capas para efecto realista */
+.falling-leaves {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.falling-leaves::before,
+.falling-leaves::after {
+  content: '🍃';
+  position: absolute;
+  font-size: 20px;
+  color: rgba(139, 195, 74, 0.6);
+  animation: fall 8s linear infinite;
+}
+
+.falling-leaves::before {
+  left: 10%;
+  animation-delay: 0s;
+  animation-duration: 8s;
+}
+
+.falling-leaves::after {
+  left: 70%;
+  content: '🍂';
+  animation-delay: 2s;
+  animation-duration: 10s;
+  color: rgba(255, 138, 101, 0.5);
+}
+
+/* Crear múltiples hojas con pseudo elementos */
+.chat-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="20" opacity="0.3">🍃</text></svg>'),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="18" opacity="0.2">🌿</text></svg>'),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="16" opacity="0.25">🍀</text></svg>'),
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="22" opacity="0.15">🍂</text></svg>');
+  background-size: 80px 80px, 60px 60px, 70px 70px, 90px 90px;
+  background-position: 20% 0%, 60% 0%, 80% 0%, 40% 0%;
+  animation: 
+    fallPattern1 12s linear infinite,
+    fallPattern2 15s linear infinite 2s,
+    fallPattern3 10s linear infinite 4s,
+    fallPattern4 18s linear infinite 6s;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animaciones removidas */
+
+/* Animaciones de hojas cayendo - Diferentes patrones */
+@keyframes fall {
+  0% {
+    transform: translateY(-100px) translateX(0px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  20% {
+    transform: translateY(10vh) translateX(10px) rotate(45deg);
+  }
+  40% {
+    transform: translateY(40vh) translateX(-10px) rotate(90deg);
+  }
+  60% {
+    transform: translateY(60vh) translateX(20px) rotate(180deg);
+  }
+  80% {
+    transform: translateY(80vh) translateX(-5px) rotate(270deg);
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(0px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fallPattern1 {
+  0% {
+    background-position: 20% -10%, 60% -10%, 80% -10%, 40% -10%;
+    transform: rotate(0deg);
+  }
+  100% {
+    background-position: 25% 110%, 65% 110%, 85% 110%, 45% 110%;
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes fallPattern2 {
+  0% {
+    background-position: 15% -10%, 55% -10%, 75% -10%, 35% -10%;
+    transform: rotate(0deg);
+  }
+  100% {
+    background-position: 10% 110%, 60% 110%, 80% 110%, 30% 110%;
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes fallPattern3 {
+  0% {
+    background-position: 25% -10%, 65% -10%, 85% -10%, 45% -10%;
+    transform: rotate(0deg);
+  }
+  100% {
+    background-position: 30% 110%, 70% 110%, 90% 110%, 50% 110%;
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes fallPattern4 {
+  0% {
+    background-position: 10% -10%, 50% -10%, 70% -10%, 30% -10%;
+    transform: rotate(0deg);
+  }
+  100% {
+    background-position: 5% 110%, 45% 110%, 75% 110%, 25% 110%;
+    transform: rotate(-5deg);
+  }
+}
+
+/* Contenedor de mensajes */
+.messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+  /* Scrollbar con tema botánico */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 195, 74, 0.6) transparent;
+}
+
+.messages::-webkit-scrollbar {
+  width: 8px;
+}
+
+.messages::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.messages::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8bc34a 0%, #689f38 100%);
+  border-radius: 4px;
+}
+
+.messages::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9ccc65 0%, #7cb342 100%);
+}
+
+/* Estilos de mensajes */
+.message {
+  max-width: 75%;
+  padding: 18px 22px;
+  border-radius: 20px;
+  position: relative;
+  animation: plantGrow 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes plantGrow {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Mensajes del usuario */
+.message.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.9) 0%, rgba(56, 142, 60, 0.95) 100%);
+  color: white;
+  box-shadow: 0 10px 35px rgba(76, 175, 80, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+}
+
+.message.user::before {
+  content: '🌱';
+  position: absolute;
+  top: -12px;
+  right: 16px;
+  background: linear-gradient(135deg, #a5d6a7 0%, #81c784 100%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(129, 199, 132, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Mensajes del bot - Análisis de plantas */
+.message.bot {
+  align-self: flex-start;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 255, 248, 0.9) 100%);
+  color: #2e7d32;
+  box-shadow: 0 10px 35px rgba(76, 175, 80, 0.15);
+  border: 2px solid rgba(139, 195, 74, 0.4);
+}
+
+.message.bot::before {
+  content: '🔬';
+  position: absolute;
+  top: -12px;
+  left: 16px;
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+}
+
+/* Mensaje especial para plantas saludables */
+.message.bot.healthy {
+  background: linear-gradient(135deg, rgba(232, 245, 233, 0.95) 0%, rgba(200, 230, 201, 0.9) 100%);
+  border: 2px solid rgba(76, 175, 80, 0.4);
+}
+
+.message.bot.healthy::before {
+  content: '✅';
+  background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+}
+
+/* Mensaje especial para plantas no saludables */
+.message.bot.unhealthy {
+  background: linear-gradient(135deg, rgba(255, 235, 238, 0.95) 0%, rgba(255, 205, 210, 0.9) 100%);
+  border: 2px solid rgba(244, 67, 54, 0.3);
+  color: #c62828;
+}
+
+.message.bot.unhealthy::before {
+  content: '⚠️';
+  background: linear-gradient(135deg, #ef5350 0%, #f44336 100%);
+}
+
+/* Imágenes de hojas en mensajes */
+.message img {
+  max-width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.message img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border-color: rgba(139, 195, 74, 0.6);
+}
+
+/* Formulario de entrada con tema botánico */
+.input-form {
+  padding: 24px;
+  background: rgba(46, 125, 50, 0.15);
+  backdrop-filter: blur(25px);
+  border-top: 2px solid rgba(139, 195, 74, 0.3);
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Input de texto */
+.input-form input[type="text"] {
+  flex: 1;
+  padding: 18px 24px;
+  border: none;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 16px;
+  color: #2e7d32;
+  outline: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+  border: 2px solid rgba(139, 195, 74, 0.2);
+}
+
+.input-form input[type="text"]:focus {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 10px 45px rgba(139, 195, 74, 0.3);
+  transform: translateY(-3px);
+  border-color: rgba(139, 195, 74, 0.6);
+}
+
+.input-form input[type="text"]::placeholder {
+  color: #81c784;
+  font-weight: 500;
+}
+
+/* Label del upload con icono de hoja */
+.upload-label {
+  background: linear-gradient(135deg, #c8e6c9 0%, #a5d6a7 100%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 24px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 25px rgba(165, 214, 167, 0.4);
+  border: 3px solid rgba(255, 255, 255, 0.5);
+  position: relative;
+}
+
+.upload-label::before {
+  content: '🍃';
+  font-size: 22px;
+}
+
+.upload-label:hover {
+  transform: translateY(-4px) rotate(10deg);
+  box-shadow: 0 12px 35px rgba(165, 214, 167, 0.6);
+  background: linear-gradient(135deg, #dcedc8 0%, #c5e1a5 100%);
+}
+
+.upload-label:active {
+  transform: translateY(-2px) rotate(5deg);
+}
+
+/* Input file oculto */
+.input-form input[type="file"] {
+  display: none;
+}
+
+/* Botón enviar con tema vegetal */
+.input-form button[type="submit"] {
+  background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+  color: white;
+  border: none;
+  padding: 18px 28px;
+  border-radius: 28px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 6px 25px rgba(76, 175, 80, 0.4);
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.input-form button[type="submit"]:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(76, 175, 80, 0.5);
+  background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+}
+
+.input-form button[type="submit"]:active {
+  transform: translateY(-2px);
+}
+
+/* Efecto de crecimiento en el botón */
+.input-form button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.7s, height 0.7s;
+}
+
+.input-form button[type="submit"]:active::before {
+  width: 350px;
+  height: 350px;
+}
+
+/* Animaciones de hover para mensajes */
+.message:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
+.message.user:hover {
+  box-shadow: 0 15px 50px rgba(255, 112, 67, 0.3);
+}
+
+.message.bot:hover {
+  box-shadow: 0 15px 50px rgba(76, 175, 80, 0.25);
+}
+
+/* Indicador de análisis de planta */
+.analyzing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: rgba(255, 193, 7, 0.1);
+  border-radius: 20px;
+  border: 2px solid rgba(255, 193, 7, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.analyzing-indicator::before {
+  content: '🔍';
+  font-size: 20px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.02);
+  }
+}
+
+/* Estados de carga con tema botánico */
+@keyframes leafGrow {
+  0%, 60%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-12px) rotate(5deg);
+  }
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 6px;
+  padding: 16px 20px;
+  align-items: center;
+}
+
+.typing-indicator::before {
+  content: '🌿 Analizando planta';
+  color: #4caf50;
+  font-weight: 600;
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.typing-indicator span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+  animation: leafGrow 1.6s ease-in-out infinite;
+  box-shadow: 0 2px 8px rgba(129, 199, 132, 0.3);
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+/* Responsive con contenedor centrado */
+@media (max-width: 768px) {
+  .chat-container {
+    height: 95vh;
+    width: 95%;
+    border-radius: 20px;
+  }
+  
+  .messages {
+    padding: 16px;
+  }
+  
+  .message {
+    max-width: 88%;
+    padding: 16px 20px;
+  }
+  
+  .input-form {
+    padding: 20px 16px;
+  }
+  
+  .upload-label {
+    width: 48px;
+    height: 48px;
+    font-size: 20px;
+  }
+  
+  .input-form button[type="submit"] {
+    padding: 16px 24px;
+    font-size: 15px;
+  }
+}
+
+/* Clases auxiliares para diferentes tipos de plantas */
+.plant-healthy {
+  border-left: 4px solid #4caf50 !important;
+}
+
+.plant-diseased {
+  border-left: 4px solid #f44336 !important;
+}
+
+.confidence-high {
+  box-shadow: 0 0 20px rgba(76, 175, 80, 0.3) !important;
+}
+
+.confidence-low {
+  box-shadow: 0 0 20px rgba(255, 193, 7, 0.3) !important;
+}
